@@ -13,9 +13,11 @@ Attaching the gripper to the Kinova requires partial disassembly, outlined below
 Begin by connecting the ribbon cable to the Kinovas 20 pin FFC port, located underneath the black guard on the end of the manipulator. Once connected, pass this cable through the corresponding slot in the base and connect it to the 20 pin FFC port on the gripper PCB. Next, attach the base to the Kinova via the 4 screws in the base.
 
 ![Figure 1 The underside of the gripper with the ribbon cable coming through the proper hole, with arrows pointing to the mounting holes](Images/Screenshot1.png)
-*Figure 1 The underside of the gripper with the ribbon cable coming through the proper hole, with arrows pointing to the mounting holes.*
+
+\n*Figure 1 The underside of the gripper with the ribbon cable coming through the proper hole, with arrows pointing to the mounting holes.*
+
 ![Figure 2 The FFC port on the gripper PCB.](Images/Screenshot2.png)
-*Figure 2 The FFC port on the gripper PCB.*
+\n*Figure 2 The FFC port on the gripper PCB.*
 
 
 ![A close-up of a machine
