@@ -20,12 +20,12 @@ Begin by removing the four phillips head screws located on the palm side of the 
 
  Once The gripper has been opened, pass the ribbon cable through the slot in the base plate, and screw the gripper onto the Kinova. Connect the ribbon cable to the 20 pin FFC port on the gripper. 
 
-![Figure 3 Mounting holes for attaching to the Kinova.](Images/KinovaMountHoles.jpg)  
+![Figure 3 Mounting holes for attaching to the Kinova.](Images/KinovaMountHoles.jpeg)  
 *Figure 3 Mounting holes for attaching to the Kinova.*
 
 Remount the top plate by replacing the four phillips screws removed previously. Finally connect the 24V 1A power supply to the bannana jacks on the bottom plate of the gripper.
 
-![Figure 4 Bannana jack on the bottom of the gripper base plate](Images/Picture3.jpg)  
+![Figure 4 Bannana jack on the bottom of the gripper base plate](Images/Picture3.jpeg)  
 *Figure 4 Bannana jack on the bottom of the gripper base plate*
 
 **Usage**
@@ -39,7 +39,7 @@ First, add the Arduino ESP32 board from the board manager menu in the Arduino ID
 
 Next, ensure power (24V 1A) is supplied to the gripper and the LEDs on the motor controllers are both green. If they are red, cycle the power.
 
-![Figure 5 location of green LED on motor controller](Images/MotorController.jpg)  
+![Figure 5 location of green LED on motor controller](Images/MotorController.jpeg)  
 *Figure 5 location of green LED on motor controller*
 
 Once power is supplied, connect the Arduino USB-C to the PC running the arduino IDE. Select the COM port which is connected to the Arduino ESP32. Upon opening the Serial Monitor (baud rate 115200) a status line should be continously printed to the Serial Monitor.
