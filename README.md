@@ -12,10 +12,10 @@ The procedure to attach the gripper to the kinova has been simplified, and now s
 Before mounting the gripper, ensure that there is a ribbon cable connected to the Kinova's 20 pin FFC port, located underneath the black guard on the end of the manipulator.
 
 Begin by removing the four phillips head screws located on the palm side of the gripper body. This will allow the top plate to seperate from the base, along with all electronics and tendon assemblies. There are two wires connecting the two plates together. Take care not to damage these connections.
-![Figure 1 A top view of the gripper, showing the palm plate with the four phillips head screws holding the gripper together.](Images/PalmPlate.png)  
+![Figure 1 A top view of the gripper, showing the palm plate with the four phillips head screws holding the gripper together.](Images/PalmPlate.jpeg)  
 *Figure 1 A top view of the gripper, showing the palm plate with the four phillips head screws holding the gripper together.*
 
-![Figure 2 The opened gripper, after the four screws have been removed. Note the two fragile wires.](Images/OpenView.png)  
+![Figure 2 The opened gripper, after the four screws have been removed. Note the two fragile wires.](Images/OpenView.jpeg)  
 *Figure 2 The opened gripper, after the four screws have been removed. Note the two fragile wires.*  
 
  Once The gripper has been opened, pass the ribbon cable through the slot in the base plate, and screw the gripper onto the Kinova. Connect the ribbon cable to the 20 pin FFC port on the gripper. 
