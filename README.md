@@ -5,49 +5,87 @@
 This gripper is intended to capture various objects, including those that are irregularly shaped. The target application for this gripper is to acquire 3U cube sats in a non-destructive manner. This help document includes assembly instructions, code usage, control, and troubleshooting assistance. Any further questions or concerns should be directed to Nate Billig (nbillig@uwyo.edu).
 
 **Assembly Instructions**
-
-Attaching the gripper to the Kinova requires partial disassembly, outlined below.
+The procedure to attach the gripper to the kinova has been simplified, and now should only take a few minutes. This procedure is outlined below.
 
 **Procedure:**
 
-Begin by connecting the ribbon cable to the Kinova's 20 pin FFC port, located underneath the black guard on the end of the manipulator. Once connected, pass this cable through the corresponding slot in the base and connect it to the 20 pin FFC port on the gripper PCB. Next, attach the base to the Kinova via the 4 screws in the base.
+Before mounting the gripper, ensure that there is a ribbon cable connected to the Kinova's 20 pin FFC port, located underneath the black guard on the end of the manipulator.
 
-![Figure 1 The underside of the gripper with the ribbon cable coming through the correct hole, with arrows pointing to the mounting holes](Images/Screenshot1.png)  
-*Figure 1 The underside of the gripper with the ribbon cable coming through the correct hole, with arrows pointing to the mounting holes.*
+Begin by removing the four phillips head screws located on the palm side of the gripper body. This will allow the top plate to seperate from the base, along with all electronics and tendon assemblies. There are two wires connecting the two plates together. Take care not to damage these connections.
+![Figure 1 A top view of the gripper, showing the palm plate with the four phillips head screws holding the gripper together.](Images/PalmPlate.png)  
+*Figure 1 A top view of the gripper, showing the palm plate with the four phillips head screws holding the gripper together.*
 
-![Figure 2 The FFC port on the gripper PCB.](Images/Screenshot2.png)  
-*Figure 2 The FFC port on the gripper PCB.*  
-  
-    
-Next, route the tendons through the load cell mounts as shown in figures 3 and 4. Note that this requires disassembly of the intermediate plate, ensure to reassemble with the tendons as shown.    
+![Figure 2 The opened gripper, after the four screws have been removed. Note the two fragile wires.](Images/OpenView.png)  
+*Figure 2 The opened gripper, after the four screws have been removed. Note the two fragile wires.*  
 
-![Figure 3 Fully Assembled Load Cell Mount.](Images/Picture2.jpg)  
-*Figure 3 Fully Assembled Load Cell Mount.*
+ Once The gripper has been opened, pass the ribbon cable through the slot in the base plate, and screw the gripper onto the Kinova. Connect the ribbon cable to the 20 pin FFC port on the gripper. 
 
-![Figure 4 A cross section of Tendon Routing](Images/Picture3.jpg)  
-*Figure 4 A cross section of Tendon Routing*
+![Figure 3 Mounting holes for attaching to the Kinova.](Images/KinovaMountHoles.jpg)  
+*Figure 3 Mounting holes for attaching to the Kinova.*
 
-Next, attach the intermediate plate with the load cells to the base plate with two screws. Each load cell has colored electrical tape on it, matching one of the motors, and one of the load cell amplifier (LCA) chips. Ensure that the correct load cell is located above its corresponding motor, and plug the load cell into its corresponding LCA, making sure that the connections are made properly (red to red, black to black, white to white, green to green, clear (ground) to yellow).
+Remount the top plate by replacing the four phillips screws removed previously. Finally connect the 24V 1A power supply to the bannana jacks on the bottom plate of the gripper.
 
-![Figure 5 A top view of the intermediate plate with arrows pointing to mounting holes (No Tendon)](Images/Screenshot3.png)  
-*Figure 5 A top view of the intermediate plate with arrows pointing to mounting holes (No Tendon)*
-
-![Figure 6 The intermediate plate with load cell assembly (No Tendons)](Images/Picture4.jpg)  
-*Figure 6 The intermediate plate with load cell assembly (No Tendons)*
-
-Next place the top lid over the gripper and route the tendons through the three prominent holes at the base of each finger. Attach the top lid with the screws found on either side
-
-![Figure 7 The gripper with the top lid on, and tendons routed through the holes.](Images/Picture5.jpg)  
-*Figure 7 The gripper with the top lid on, and tendons routed through the holes.*
-
-Finally, each finger is friction fit into its respective slot, with the tendon being routed up through the internal holes in each finger pad to the terminal link, where it is passed through the bead going up, going down, and then tied to itself using a non-slip knot.
-
-**Specifications**
-
-This gripper is to be used with an external power supply, providing 24V at a maximum of 2A. During usage, Connect the external power supply to the on-board banana jack. **Do not supply more than 24V.**
+![Figure 4 Bannana jack on the bottom of the gripper base plate](Images/Picture3.jpg)  
+*Figure 4 Bannana jack on the bottom of the gripper base plate*
 
 **Usage**
+*Direct Control via USB-C*
+Due to previous connection issues using the Kinova API, a second control method has been implemented in which commands can be sent directly to the onboard Arduino ESP32 through a USB-C connection. This requires no libraries or uploading of code, and can be controlled through the serial monitor of the Arduino IDE. Before operation familiarize yourself with the control scheme outlined below, as well as the Startup and Zeroing Procedure.
 
+First, add the Arduino ESP32 board from the board manager menu in the Arduino IDE.
+<video width="640" height="360" controls>
+  <source src="Images/InstallBoard.mp4" type="video/mp4">
+</video>
+
+Next, ensure power (24V 1A) is supplied to the gripper and the LEDs on the motor controllers are both green. If they are red, cycle the power.
+
+![Figure 5 location of green LED on motor controller](Images/MotorController.jpg)  
+*Figure 5 location of green LED on motor controller*
+
+Once power is supplied, connect the Arduino USB-C to the PC running the arduino IDE. Select the COM port which is connected to the Arduino ESP32. Upon opening the Serial Monitor (baud rate 115200) a status line should be continously printed to the Serial Monitor.
+
+The gripper continously sends a status line in the following format:
+[READYBIT][LC1][LC2][LC3][M1ENCODER][M2ENCODER][M3ENCODER]
+where:
+READYBIT = Whether or not the gripper is ready for a command (1 = Ready, 0 = Not Ready)
+LC1 = The reading from the load cell associated with motor 1 (in grams)
+LC2 = The reading from the load cell associated with motor 2 (in grams)
+LC3 = The reading from the load cel lassociated with motor 3 (in grams)
+M1ENCODER = The encoder offset from 0 for motor 1
+M2ENCODER = The encoder offset from 0 for motor 2
+M3ENCODER = The encoder offset from 0 for motor 3
+
+To send commands to the gripper, simply enter them into the Serial Monitor (at 115200 baud rate). Commands are:
+M1 [NUM]
+M1 ++[NUM]
+M1 --[NUM]
+
+M2 [NUM]
+M2 ++[NUM]
+M2 --[NUM]
+
+M3 [NUM]
+M3 ++[NUM]
+M3 --[NUM]
+
+TARE
+TARE [1|2|3]
+STATUS
+
+Where:
+M1 [NUM], M2[NUM], or M3[NUM] ------ sets the motor to an absolute encoder position. Encoder positions range from -18000 to 18000. The encoders are set to 0 when the gripper is first powered on. 18000 is the number of encoder counts required to fully close the finger from the open position. So, to fully close the finger attached to motor one (assuming the gripper is fully open) Enter the command "M1 18000". Similarily to half close the finger associated with M2 you enter the command "M2 9000". To send the finger back to its original position (the position it was in when the gripper was first powered on), send "M1 0"
+
+Negative arguments are allowed to account for the case in which power is unexpectedly lost when the gripper is partially closed. By sending negative arguments e.g. "M1 -5000" The finger can open past the initial position.
+
+Absolute encoder postion commands can be sent simultaneously for multi-finger movement. Individual commands are seperated by ";". For example if you want to fully close all three fingers simultaneously, send the command "M1 18000; M2 18000; M3 18000;"
+
+M# ++[NUM] or M# --[NUM]  ------ can be used to send relative encoder count movements. These commands update the absolute encoder count by the amount specified. For example if the M1 encoder count is at 18000 (finger fully closed), and the command "M1 --1000" is sent, then the absolute encoder count will now be 17000, and the finger will open slightly. The same command can be sent again to move the encoder count to 16000, opening the finger slightly more. Similarily "M# ++[NUM]" will increment the absolute encoder count by the NUM specified.
+
+TARE ------ Zeros all load cells. Can be used without arguments e.g. "TARE" to zero all load cells, or can be used with an argumen [1|2|3] to specify which load cell should be zeroed. Example: "tare 1" zeros the load cell associated with motor/finger 1.
+
+STATUS ------ returns the status of the gripper, which is already being printed to the serial monitor every time step. Unnessesary to use when using Arduino command scheme.
+
+*Kinova API*
 Prior to usage, be familiar with using the [Kinova Python API.](https://github.com/Kinovarobotics/Kinova-kortex2_Gen3_G3L/tree/master/api_python) This gripper uses the Kinova python API to send commands/read tendon tensions, and is reliant on the *utilities.py* file located in this directory. Necessary code files can be found in the github repository.
 
 * Once the API has been installed, and the pc connected, apply power to Kinova and let it complete its initialization process. Next, apply power to the gripper via the external power supply.
