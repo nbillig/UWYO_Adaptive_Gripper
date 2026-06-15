@@ -14,7 +14,7 @@ Begin by removing the four phillips head screws located on the palm side of the 
 *Figure 1 A top view of the gripper, showing the palm plate with the four phillips head screws holding the gripper together.*
 
 ![Figure 2 The opened gripper, after the four screws have been removed. Note the four fragile wires.](Images/OpenView.jpeg)  
-*Figure 2 The opened gripper, after the four screws have been removed. Note the two fragile wires.*  
+*Figure 2 The opened gripper, after the four screws have been removed. Note the four fragile wires.*  
 
  Once The gripper has been opened, pass the ribbon cable through the slot in the base plate, and screw the gripper onto the Kinova. Connect the ribbon cable to the 20 pin FFC port on the gripper, which is located on a breakout board in the center of the base.
 
