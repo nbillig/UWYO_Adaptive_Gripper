@@ -1,5 +1,3 @@
-![Alternative text describing the image](Images/Picture1.jpeg)
-
 **Introduction**
 
 This gripper is intended to capture various objects, including those that are irregularly shaped. The target application for this gripper is to acquire 3U cube sats in a non-destructive manner. This help document includes assembly instructions, code usage, control, and troubleshooting assistance. Any further questions or concerns should be directed to Nate Billig (nbillig@uwyo.edu).
