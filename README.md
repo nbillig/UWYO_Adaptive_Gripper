@@ -1,4 +1,4 @@
-![Alternative text describing the image](Images/Picture1.png)
+![Alternative text describing the image](Images/Picture1.jpeg)
 
 **Introduction**
 
@@ -11,14 +11,14 @@ The procedure to attach the gripper to the kinova has been simplified, and now s
 
 Before mounting the gripper, ensure that there is a ribbon cable connected to the Kinova's 20 pin FFC port, located underneath the black guard on the end of the manipulator.
 
-Begin by removing the four phillips head screws located on the palm side of the gripper body. This will allow the top plate to seperate from the base, along with all electronics and tendon assemblies. There are two wires connecting the two plates together. Take care not to damage these connections.
+Begin by removing the four phillips head screws located on the palm side of the gripper body. This will allow the top plate to seperate from the base, along with all electronics and tendon assemblies. There are four wires connecting the two plates together. Take care not to damage these connections.
 ![Figure 1 A top view of the gripper, showing the palm plate with the four phillips head screws holding the gripper together.](Images/PalmPlate.jpeg)  
 *Figure 1 A top view of the gripper, showing the palm plate with the four phillips head screws holding the gripper together.*
 
-![Figure 2 The opened gripper, after the four screws have been removed. Note the two fragile wires.](Images/OpenView.jpeg)  
+![Figure 2 The opened gripper, after the four screws have been removed. Note the four fragile wires.](Images/OpenView.jpeg)  
 *Figure 2 The opened gripper, after the four screws have been removed. Note the two fragile wires.*  
 
- Once The gripper has been opened, pass the ribbon cable through the slot in the base plate, and screw the gripper onto the Kinova. Connect the ribbon cable to the 20 pin FFC port on the gripper. 
+ Once The gripper has been opened, pass the ribbon cable through the slot in the base plate, and screw the gripper onto the Kinova. Connect the ribbon cable to the 20 pin FFC port on the gripper, which is located on a breakout board in the center of the base.
 
 ![Figure 3 Mounting holes for attaching to the Kinova.](Images/KinovaMountHoles.jpeg)  
 *Figure 3 Mounting holes for attaching to the Kinova.*
@@ -29,7 +29,7 @@ Remount the top plate by replacing the four phillips screws removed previously. 
 *Figure 4 Bannana jack on the bottom of the gripper base plate*
 
 **Usage**
-*Direct Control via USB-C*
+*Arduino Direct Control via USB-C*
 Due to previous connection issues using the Kinova API, a second control method has been implemented in which commands can be sent directly to the onboard Arduino ESP32 through a USB-C connection. This requires no libraries or uploading of code, and can be controlled through the serial monitor of the Arduino IDE. Before operation familiarize yourself with the control scheme outlined below, as well as the Startup and Zeroing Procedure.
 
 First, add the Arduino ESP32 board from the board manager menu in the Arduino IDE.
@@ -56,21 +56,21 @@ M2ENCODER = The encoder offset from 0 for motor 2
 M3ENCODER = The encoder offset from 0 for motor 3
 
 To send commands to the gripper, simply enter them into the Serial Monitor (at 115200 baud rate). Commands are:
-M1 [NUM]
-M1 ++[NUM]
-M1 --[NUM]
+**M1 [NUM]**
+**M1 ++[NUM]**
+**M1 --[NUM]**
 
-M2 [NUM]
-M2 ++[NUM]
-M2 --[NUM]
+**M2 [NUM]**
+**M2 ++[NUM]**
+**M2 --[NUM]**
 
-M3 [NUM]
-M3 ++[NUM]
-M3 --[NUM]
+**M3 [NUM]**
+**M3 ++[NUM]**
+**M3 --[NUM]**
 
-TARE
-TARE [1|2|3]
-STATUS
+**TARE**
+**TARE [1|2|3]**
+**STATUS**
 
 Where:
 M1 [NUM], M2[NUM], or M3[NUM] ------ sets the motor to an absolute encoder position. Encoder positions range from -18000 to 18000. The encoders are set to 0 when the gripper is first powered on. 18000 is the number of encoder counts required to fully close the finger from the open position. So, to fully close the finger attached to motor one (assuming the gripper is fully open) Enter the command "M1 18000". Similarily to half close the finger associated with M2 you enter the command "M2 9000". To send the finger back to its original position (the position it was in when the gripper was first powered on), send "M1 0"
@@ -89,54 +89,42 @@ STATUS ------ returns the status of the gripper, which is already being printed 
 Prior to usage, be familiar with using the [Kinova Python API.](https://github.com/Kinovarobotics/Kinova-kortex2_Gen3_G3L/tree/master/api_python) This gripper uses the Kinova python API to send commands/read tendon tensions, and is reliant on the *utilities.py* file located in this directory. Necessary code files can be found in the github repository.
 
 * Once the API has been installed, and the pc connected, apply power to Kinova and let it complete its initialization process. Next, apply power to the gripper via the external power supply.
-* Once power has been supplied to both the Kinova and the gripper, open the directory in cmd/terminal, and run the python script *10-2-25GripperControl.py.* You should see a message that says **“*Logging as admin on device (IP)*”** then: **“*I2C bridge initialized. Keys: (W,S: Motor1; E,D: Motor2; R,F: Motor3, L: Read Load Cells, Z: Zero Load Cells), ESC to exit*.”** If you do not see these messages, then there is an issue communicating between the computer and the Kinova arm. Ensure that the PC is connected (a quick way to test is to try and use the Kinova web application for manipulator control). Otherwise refer to the I2C [example in the github](https://github.com/Kinovarobotics/Kinova-kortex2_Gen3_G3L/tree/master/api_python/examples/105-Gen3_i2c_bridge) , and the **Troubleshooting** section.
-* Once connected, use the controls outlined in the **Controls** section to move the gripper. A very brief description is printed to the CMD window when in use.
-  + **Note:** Communication is handled in such a way that each press/hold of a control key only results in one action and there is a cooldown in between actions. This is to ensure that the gripper does not have a “buffer” of commands. **The procedure to use the gripper is**: press a key, wait until the corresponding message is printed out to the CMD window and the action is taken, then press the next key. When actuating the gripper, it is recommended to **increment each motor individually**, and **read each load cell in between commands** to ensure that tensions are within the rated specification (10,000).
-  + **Note:** When zeroing the load cells, it may take several seconds for the reading to update, so zero the load cells (Z) then **wait at least 10 seconds** before reading the load cells (L).
-  + **Note:** The current reading of the load cells is not calibrated to the true tendon tension, meaning that the values returned when reading load cells is **NOT the tension in each tendon.** Instead, this value is the reading of the load cell in grams.This value is indictive of the tension by a linear relationship, giving a general idea of gripping force. During testing, no damage was found to occur to the gripper before these readings reached 18,000g. It is recommended that while in use **THESE VALUES DO NOT EXCEED 10,000g** for safe operation.
-* **Every time the gripper is used the following procedure should be followed during startup:**
+* Once power has been supplied to both the Kinova and the gripper, open the directory in cmd/terminal, and run the python script *Gripper_Simultaneous_Control_Kinova.py* You should see a message that says **“*Logging as admin on device (IP)*”** then: **"=== Gripper I2C Control CLI ===
+Commands: set <id> <pos> | setall <m1> <m2> <m3> | stop | tare | status | quit"** If you do not see these messages, then there is an issue communicating between the computer and the Kinova arm, or the Kinova arm and the gripper.
+Once connected, the control scheme is very similar to the *Arduino Direct Control via USB-C*. Commands work as described below:
 
-1. First, actuate the motors individually until all tendons are tensioned, but the fingers are only slightly bent – This will become the “fully open” position.
-2. Press the O key to reset the encoders to 0. This will prevent the motors from moving past this position when opening the gripper.
-3. Press Z to zero the load cells to this position. This allows uniform readings in the load cells for all fingers.
-4. Begin to use the gripper.
+set <id> <pos> ----- This sets a specific motor to an absolute encoder count. Ex "set 1 10000" will set the motor 1 encoder to an absolute position of 10000.
 
-**Troubleshooting**
+setall <m1> <m2> <m3> ----- This sends a command to move all three motors simultaneously. Ex "setall 10000 9000 8000" will set M1 to 10000, M2 to 9000, M3 to 8000. If you wanted to keep one motor still, say motor 2, then you could send the command with an x in that position: "setall 10000 x 8000". Alternatively you could replace the x with M2's current encoder count.
 
-If when trying to connect to the gripper, the I2C bridge is initialized, but an error is received upon key press, There is most likely an issue communicating between the Kinova and the onboard ESP32. The recommended solution is to power cycle the gripper (Turn off the power supply, wait 10 seconds, turn on the power supply and wait for initialization). This has been observed to occur when power is supplied to the gripper **before** the Kinova. Next, ensure that the ribbon cable is connected properly on both ends. If this does not resolve the issue, check the connections within the gripper, as one has most likely come loose.
+stop ----- This command reads the absolute encoder position, and commands the motor to move to that position. It does not immediately stop the motors. In the event that motors need to be immediately powered off, turn off the external power supply.
 
-During the event of a suspected system failure, immediately cut power to the gripper and begin disassembly until the failure is found. Replacement parts for most likely breakages have been included. This includes Motor mounts, tension sensing mounts, tendons, and tendon terminal pieces. Refer to the assembly section for direction on how to replace these parts.
+tare ----- This command zeros the load cells. to zero all three load cells: "tare" to specifically tare one load cell "tare 1", "tare 2", or "tare 3"
 
-**Controls**
+status ----- This command returns and prints all relevant information about the gripper, including: ready status, load cell readings, and absolute encoder counts.
 
-Controls are input by the keyboard during use, and are outlined below:
+quit ----- Ends the command session.
 
-**W – Motor 1 Increment**
+*Operation Recommendations*
+It is recommended that the motors are actuated in small steps, while reading the load cells in between each step to ensure that excessive pressure is not being applied to the object. I recommend zeroing the load cells at the zero (open) position. Safe operation is generally considered when the load cells read less than 25,000g. Spools generally break around readings of 35,000g or above. I have found forces between 25,000 - 30,000 are more than necessary for grasping most objects, but it depends on the grasping orientation and object being grasped. **Note:** The current reading of the load cells is not calibrated to the true tendon tension, meaning that the values returned when reading load cells is **NOT the tension in each tendon.** Instead, this value is the reading of the load cell in grams.This value is indictive of the tension by a linear relationship, giving a general idea of gripping force.
 
-**S – Motor 1 Decrement**
 
-**E – Motor 2 Increment**
+**Startup and Zeroing Procedure**
+This guide outlines the process of the initial zeroing of the encoders and finger positions to make sure that fingers are not overly closed, resulting in broken finger components. This procedure does not need to be done every time the gripper is used, assuming the gripper is only powered off after confirmation that the absolute encoder count for each motor is at 0. Instead, this procedure is meant for first time use, or to rezero the encoders after the gripper was powered off with absolute encoder counts not at 0.
+*Procedure:*
+First, follow the steps in either the *Arduino Direct Control via USB-C* or the *Kinova API Usage* to power on the gripper and establish the connection. Then increment motors slowly until the fingers are observed to be fully closed (see figure). Note - this may require cycling the power (maybe multiple times depending on original position) to reset the encoder count to move past the -18000/18000 limit. If using the *Arduino Direct Control via USB-C*, disconnect the USB-C from the PC, cycle the power supply, and reconnect the USB-C. This effectively resets the encoder positions to 0. Note - If the USB-C is not disconnected, the Arduino will not restart, and encoder positions will not be reset to 0.
 
-**D - Motor 2 Decrement**
+Once the fingers are observed to be fully closed, cycle the power as described above. Now the encoders should all read 0, and the finger should be fully closed. send all three fingers to the minimum position -18000, and cycle the power once more. 
 
-**R – M3 Increment**
+Upon completion, the fingers should be zerod to the fully open position. This means that the encoders all read 0, and the fingers are fully open. Now positions can be sent to the fingers, and the encoder limit of 18000 should correspond to a fully closed finger. This procedure ensures that the encoders for each finger are in sync, and that the gripper can achieve full range of motion.
 
-**F – M3 Decrement**
+![Figure 6 Gripper with all three fingers fully closed. Note that there are no gaps between finger pads in this configuration.](Images/FullyClosedFinger.jpeg)  
+*Figure 6 Gripper with all three fingers fully closed. Note that there are no gaps between finger pads in this configuration.*
 
-**T – Increment All Motors**
+![Figure 6 Gripper with all three fingers fully closed.](Images/FullyOpenFinger.jpeg)  
+*Figure 6 Gripper with all three fingers fully Open.*
 
-**G – Decrement All Motors**
+**Replacing Parts**
+During operation if any component should break, immediatly turn off power to the gripper. The most likely component to break is the spool, for which replacements have been sent. Simply remove the 4 philips head screws on the palm plate, remove the D-shaft collar and spool assembly using a small allen wrench, and replace the spool. Make sure to follow the zeroing procedure before resuming normal operation. If anything else should break, or for any other concerns, contact Nate Billig - nbillig@uwyo.edu.
 
-**O – Reset all encoders to 0**
 
-**P – Set all encoders to maximum**
-
-**L – Read Load Cells**
-
-**Z – Zero Load Cells**
-
-**Note:** The *Reset all encoders to 0* and *set all encoders to maximum* commands are used to set limits on the fingers so that they can return to a set minimum position.
-
-**Connection Guide**
-This image gives a general idea of the connections between the motors and the load cells. Ideally, all connections are already made except for the load cells needing to be connected to the LCA. If further connection help is needed, PCB schematics can be sent. For any further assistance, general help, or to request PCB schematics, contact Nate Billig (nbillig@uwyo.edu).
-![Figure 8 Connection Guide](Images/Picture6.png)  
