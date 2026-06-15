@@ -31,9 +31,8 @@ Remount the top plate by replacing the four phillips screws removed previously. 
 Due to previous connection issues using the Kinova API, a second control method has been implemented in which commands can be sent directly to the onboard Arduino ESP32 through a USB-C connection. This requires no libraries or uploading of code, and can be controlled through the serial monitor of the Arduino IDE. Before operation familiarize yourself with the control scheme outlined below, as well as the Startup and Zeroing Procedure.
 
 First, add the Arduino ESP32 board from the board manager menu in the Arduino IDE.
-<video width="640" height="360" controls>
-  <source src="Images/Installboard.gif" type="video/gif">
-</video>
+<img width="1260" height="712" alt="Installboard" src="https://github.com/user-attachments/assets/e008244e-1621-4d96-8057-b9f178782823" />
+
 
 Next, ensure power (24V 1A) is supplied to the gripper and the LEDs on the motor controllers are both green. If they are red, cycle the power.
 
