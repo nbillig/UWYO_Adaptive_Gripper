@@ -26,51 +26,51 @@ Remount the top plate by replacing the four phillips screws removed previously. 
 ![Figure 4 Bannana jack on the bottom of the gripper base plate](Images/Picture3.jpeg)  
 *Figure 4 Bannana jack on the bottom of the gripper base plate*
 
-**Usage**
-*Arduino Direct Control via USB-C*
+**Usage**  
+*Arduino Direct Control via USB-C*  
 Due to previous connection issues using the Kinova API, a second control method has been implemented in which commands can be sent directly to the onboard Arduino ESP32 through a USB-C connection. This requires no libraries or uploading of code, and can be controlled through the serial monitor of the Arduino IDE. Before operation familiarize yourself with the control scheme outlined below, as well as the Startup and Zeroing Procedure.
 
 First, add the Arduino ESP32 board from the board manager menu in the Arduino IDE.
 <img width="1260" height="712" alt="Installboard" src="https://github.com/user-attachments/assets/e008244e-1621-4d96-8057-b9f178782823" />
 
 
-Next, ensure power (24V 1A) is supplied to the gripper and the LEDs on the motor controllers are both green. If they are red, cycle the power.
+Next, ensure power (24V 1A) is supplied to the gripper through the banana jacks, and the LEDs on the motor controllers are both green. If they are red, cycle the power.
 
 ![Figure 5 location of green LED on motor controller](Images/MotorController.jpeg)  
 *Figure 5 location of green LED on motor controller*
 
-Once power is supplied, connect the Arduino USB-C to the PC running the arduino IDE. Select the COM port which is connected to the Arduino ESP32. Upon opening the Serial Monitor (baud rate 115200) a status line should be continously printed to the Serial Monitor.
+After external power is supplied, connect the Arduino USB-C to the PC running the arduino IDE. Select the COM port which is connected to the Arduino ESP32. Upon opening the Serial Monitor (baud rate 115200) a status line should be continously printed to the Serial Monitor.  
 
-The gripper continously sends a status line in the following format:
-[READYBIT][LC1][LC2][LC3][M1ENCODER][M2ENCODER][M3ENCODER]
-where:
-READYBIT = Whether or not the gripper is ready for a command (1 = Ready, 0 = Not Ready)
-LC1 = The reading from the load cell associated with motor 1 (in grams)
-LC2 = The reading from the load cell associated with motor 2 (in grams)
-LC3 = The reading from the load cel lassociated with motor 3 (in grams)
-M1ENCODER = The encoder offset from 0 for motor 1
-M2ENCODER = The encoder offset from 0 for motor 2
-M3ENCODER = The encoder offset from 0 for motor 3
+The gripper continously sends a status line in the following format:  
+[READYBIT][LC1][LC2][LC3][M1ENCODER][M2ENCODER][M3ENCODER]  
+where:  
+READYBIT = Whether or not the gripper is ready for a command (1 = Ready, 0 = Not Ready)  
+LC1 = The reading from the load cell associated with motor 1 (in grams)  
+LC2 = The reading from the load cell associated with motor 2 (in grams)  
+LC3 = The reading from the load cel lassociated with motor 3 (in grams)  
+M1ENCODER = The encoder offset from 0 for motor 1  
+M2ENCODER = The encoder offset from 0 for motor 2  
+M3ENCODER = The encoder offset from 0 for motor 3  
 
-To send commands to the gripper, simply enter them into the Serial Monitor (at 115200 baud rate). Commands are:
-**M1 [NUM]**
-**M1 ++[NUM]**
-**M1 --[NUM]**
+To send commands to the gripper, simply enter them into the Serial Monitor (at 115200 baud rate). Commands are:  
+**M1 [NUM]**  
+**M1 ++[NUM]**  
+**M1 --[NUM]**  
 
-**M2 [NUM]**
-**M2 ++[NUM]**
-**M2 --[NUM]**
+**M2 [NUM]**  
+**M2 ++[NUM]**  
+**M2 --[NUM]**  
 
-**M3 [NUM]**
-**M3 ++[NUM]**
-**M3 --[NUM]**
+**M3 [NUM]**  
+**M3 ++[NUM]**  
+**M3 --[NUM]**  
 
-**TARE**
-**TARE [1|2|3]**
-**STATUS**
+**TARE**  
+**TARE [1|2|3]**  
+**STATUS**  
 
-Where:
-M1 [NUM], M2[NUM], or M3[NUM] ------ sets the motor to an absolute encoder position. Encoder positions range from -18000 to 18000. The encoders are set to 0 when the gripper is first powered on. 18000 is the number of encoder counts required to fully close the finger from the open position. So, to fully close the finger attached to motor one (assuming the gripper is fully open) Enter the command "M1 18000". Similarily to half close the finger associated with M2 you enter the command "M2 9000". To send the finger back to its original position (the position it was in when the gripper was first powered on), send "M1 0"
+Where:  
+M1 [NUM], M2 [NUM], or M3 [NUM] ------ sets the motor to an absolute encoder position. Encoder positions range from -18000 to 18000. The encoders are set to 0 when the gripper is first powered on. 18000 is the number of encoder counts required to fully close the finger from the open position. So, to fully close the finger attached to motor one (assuming the gripper is fully open) Enter the command "M1 18000". Similarily to half close the finger associated with M2 you enter the command "M2 9000". To send the finger back to its original position (the position it was in when the gripper was first powered on), send "M1 0" *Note* The gripper should only be powered off once all fingers have been reset to their initial position, i.e, the command "M1 0; M2 0; M3 0;" has been sent.
 
 Negative arguments are allowed to account for the case in which power is unexpectedly lost when the gripper is partially closed. By sending negative arguments e.g. "M1 -5000" The finger can open past the initial position.
 
@@ -82,7 +82,7 @@ TARE ------ Zeros all load cells. Can be used without arguments e.g. "TARE" to z
 
 STATUS ------ returns the status of the gripper, which is already being printed to the serial monitor every time step. Unnessesary to use when using Arduino command scheme.
 
-*Kinova API*
+*Kinova API*  
 Prior to usage, be familiar with using the [Kinova Python API.](https://github.com/Kinovarobotics/Kinova-kortex2_Gen3_G3L/tree/master/api_python) This gripper uses the Kinova python API to send commands/read tendon tensions, and is reliant on the *utilities.py* file located in this directory. Necessary code files can be found in the github repository.
 
 * Once the API has been installed, and the pc connected, apply power to Kinova and let it complete its initialization process. Next, apply power to the gripper via the external power supply.
@@ -111,7 +111,7 @@ This guide outlines the process of the initial zeroing of the encoders and finge
 *Procedure:*
 First, follow the steps in either the *Arduino Direct Control via USB-C* or the *Kinova API Usage* to power on the gripper and establish the connection. Then increment motors slowly until the fingers are observed to be fully closed (see figure). Note - this may require cycling the power (maybe multiple times depending on original position) to reset the encoder count to move past the -18000/18000 limit. If using the *Arduino Direct Control via USB-C*, disconnect the USB-C from the PC, cycle the power supply, and reconnect the USB-C. This effectively resets the encoder positions to 0. Note - If the USB-C is not disconnected, the Arduino will not restart, and encoder positions will not be reset to 0.
 
-Once the fingers are observed to be fully closed, cycle the power as described above. Now the encoders should all read 0, and the finger should be fully closed. send all three fingers to the minimum position -18000, and cycle the power once more. 
+Once the fingers are observed to be fully closed, cycle the power as described above with the USB-C disconnected, then reconnect the USB-C. Now the encoders should all read 0, and the finger should be fully closed. send all three fingers to the minimum position (-18000), and cycle the power once more. 
 
 Upon completion, the fingers should be zerod to the fully open position. This means that the encoders all read 0, and the fingers are fully open. Now positions can be sent to the fingers, and the encoder limit of 18000 should correspond to a fully closed finger. This procedure ensures that the encoders for each finger are in sync, and that the gripper can achieve full range of motion.
 
