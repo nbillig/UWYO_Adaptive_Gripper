@@ -32,7 +32,7 @@ Due to previous connection issues using the Kinova API, a second control method 
 
 First, add the Arduino ESP32 board from the board manager menu in the Arduino IDE.
 <video width="640" height="360" controls>
-  <source src="Images/InstallBoard.mp4" type="video/mp4">
+  <source src="Images/Installboard.gif" type="video/gif">
 </video>
 
 Next, ensure power (24V 1A) is supplied to the gripper and the LEDs on the motor controllers are both green. If they are red, cycle the power.
